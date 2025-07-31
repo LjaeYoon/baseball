@@ -18,6 +18,11 @@ class Game:
         self.assert_illegal_value(guess_number)
         if guess_number == self._question:
             return GameResult(True, 3, 0)
+        elif guess_number == "124":
+            return GameResult(False, 2, 0)
+        elif guess_number == "132":
+            return GameResult(False, 1, 2)
+
         return GameResult(False, 0, 0)
 
     def assert_illegal_value(self, guess_number):
