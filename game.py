@@ -5,6 +5,7 @@ class Game:
 
     def __init__(self):
         self._question = ""
+        self.__ans = [0] * 10
 
     @property
     def question(self):
@@ -13,17 +14,37 @@ class Game:
     @question.setter
     def question(self, question):
         self._question = question
+        self.update_map(self.__ans, question)
 
     def guess(self, guess_number):
         self.assert_illegal_value(guess_number)
-        if guess_number == self._question:
-            return GameResult(True, 3, 0)
-        elif guess_number == "124":
-            return GameResult(False, 2, 0)
-        elif guess_number == "132":
-            return GameResult(False, 1, 2)
 
-        return GameResult(False, 0, 0)
+        guess_list = [0] * 10
+        strike = 0
+        ball = 0
+
+        self.update_map(guess_list, guess_number)
+
+        ball, strike = self.calculate_result(ball, guess_list, strike)
+
+        solve = True if strike == 3 else False
+
+        return GameResult(solve, strike, ball)
+
+    def update_map(self, guess_list, guess_number):
+        for idx in range(len(guess_number)):
+            guess_list[int(guess_number[idx])] = int(idx) + 1
+
+    def calculate_result(self, ball, guess_list, strike):
+        for i in range(10):
+            if self.__ans[i] == 0 or guess_list[i] == 0:
+                continue
+
+            if self.__ans[i] == guess_list[i]:
+                strike += 1
+            else:
+                ball += 1
+        return ball, strike
 
     def assert_illegal_value(self, guess_number):
         if guess_number is None:
@@ -42,3 +63,8 @@ class Game:
         return guess_number[0] == guess_number[1] or \
             guess_number[0] == guess_number[2] or \
             guess_number[2] == guess_number[1]
+
+
+game = Game()
+game.question = "123"
+game.guess("543")
