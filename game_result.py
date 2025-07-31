@@ -15,4 +15,3 @@ class GameResult:
     @property
     def balls(self):
         return self._balls
-

@@ -64,7 +64,3 @@ class Game:
             guess_number[0] == guess_number[2] or \
             guess_number[2] == guess_number[1]
 
-
-game = Game()
-game.question = "123"
-game.guess("543")
